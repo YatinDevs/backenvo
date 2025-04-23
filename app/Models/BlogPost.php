@@ -27,14 +27,15 @@ class BlogPost extends Model
         'views' => 0
     ];
 
-    // Add this if you want to format the image URLs
+   
+    // Return relative paths for URLs
     public function getImageUrlAttribute($value)
     {
-        return $value ? asset('storage/'.$value) : null;
+        return $value ? $value : null;
     }
 
     public function getAuthorAvatarAttribute($value)
     {
-        return $value ? asset('storage/'.$value) : null;
+        return $value ? $value : null;
     }
 }

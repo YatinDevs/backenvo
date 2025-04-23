@@ -10,21 +10,21 @@ class BlogController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json(
-            BlogPost::where('is_published', true)
-                ->latest('published_date')
-                ->paginate($request->input('per_page', 4))
-        );
+        $posts = BlogPost::where('is_published', true)
+            ->latest('published_date')
+            ->paginate($request->input('per_page', 4));
+
+        return response()->json($posts);
     }
 
     public function recent()
     {
-        return response()->json(
-            BlogPost::where('is_published', true)
-                ->latest('published_date')
-                ->limit(3)
-                ->get(['id', 'title', 'slug', 'published_date', 'image_url'])
-        );
+        $posts = BlogPost::where('is_published', true)
+            ->latest('published_date')
+            ->limit(3)
+            ->get(['id', 'title', 'slug', 'published_date', 'image_url']);
+
+        return response()->json($posts);
     }
 
     public function byCategory($category = null)
@@ -45,9 +45,7 @@ class BlogController extends Controller
             ->where('is_published', true)
             ->firstOrFail();
         
-        // Increment views if you have that column
-        $post->increment('views');
-        
+      
         return response()->json([
             'post' => $post,
             'related' => BlogPost::where('category', $post->category)
